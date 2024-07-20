@@ -1,0 +1,39 @@
+{% extends 'main/base_home.html' %}
+{% block content %}
+{% include 'main/include/navbars.html' %}
+{% load tags_and_filter %}
+<body>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <div class="card mb-3 mt-4 box-shadow">
+                    {% if search_content %}
+                    <div class="card-header text-center">
+                        <p class="lead">
+                           {{ search_content.city }}
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mt-3 mb-4 text-center m-3">
+                            <li>
+                                <em>
+
+                                В городе {{ search_content.city }} сегодня {{ search_content.weather }} <br>
+                                Температура воздуха {{ search_content.temperature }} С°<br>
+                                Максимальная температура {{ search_content.temperature_max }}<br>
+                                Минимальная температура {{ search_content.temperature_min }}
+                                {% else %}
+                                {{ text }}
+                                {% endif %}
+                                </em>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </div>
+</body>
+{% endblock %}

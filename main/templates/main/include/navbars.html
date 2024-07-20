@@ -1,0 +1,40 @@
+{% load tags_and_filter %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/" style="font-size: 4.0rem;">DailyForecast</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mt-3 navbar-nav-scroll">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <img src="{{ user.avatar|mymedia }}" alt="Ваш аватар" width="60" height="60"
+                         class="rounded-circle me-2">
+                </li>
+                {% endif %}
+                <li class="nav-item dropdown mt-2">
+                    <a class="nav-link dropdown-toggle" style="font-size: 1.5rem;" href="#" role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Профиль
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% if user.is_authenticated %}
+                        <li>
+                            <form method="post" enctype="multipart/form-data"
+                                  action="{% url 'users:logout' %}">
+                                {% csrf_token %}
+                                <button class="dropdown-item" type="submit">Выйти из профиля</button>
+                            </form>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'users:profile' %}">Посмотреть профиль</a></li>
+                        {% else %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'users:login' %}">Войти в профиль</a>
+                            <a class="dropdown-item" href="{% url 'users:register' %}">Регистрация</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

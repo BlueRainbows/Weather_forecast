@@ -1,0 +1,121 @@
+{% extends 'main/base_home.html' %}
+{% block content %}
+{% include 'main/include/navbars.html' %}
+{% load tags_and_filter %}
+<body>
+<div class="col-12">
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                {% if not user.is_authenticated %}
+                <div class="lead text-center mb-3 mt-3">
+                    <p>
+                        Добро пожаловать в сервис поиска погоды!<br>
+                        Чтобы посмотреть погоду на ближайшее время необходимо войти в аккаунт.<br>
+                        Если у вас еще нет аккаунта вы можете зарегистрироваться.<br>
+                    </p>
+                </div>
+                {% else %}
+                <div class="lead text-center mb-3 mt-3">
+                    <p>
+                        Чтобы узнать погоду на ближайшее время укажите, название города в поисковой строке.<br>
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card-home">
+        {% if weather %}
+        {% for weat in weather %}
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"> Вы искали {{ weat.city.city }} ({{ weat.data }})</li>
+            </ul>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="card-body text-center">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Вы еще ничего не искали</li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    {% if user.is_authenticated %}
+    <div class="card-home">
+        <h1 class="lead">
+            Поиск города
+        </h1>
+        <form class="d-flex" action="{% url 'main:search' %}" method="post">
+            {% csrf_token %}
+            <input class="form-control mt-3 mb-3 me-4" name="search" list="city" type="search"
+                   placeholder="Введите город">
+            <datalist id="city">
+                {% for con in city %}
+                <option value="{{ con.city }}"></option>
+                {% endfor %}
+            </datalist>
+            <button class="btn mt-3 mb-3 me-4" type="submit" style="background-color: #d1f4fd">
+                <a class="link-body-emphasis link-offset-2 link-underline-opacity-0">Найти</a>
+            </button>
+        </form>
+    </div>
+    {% endif %}
+
+</div>
+
+{% if history %}
+<div class="col-12">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <script>
+                function showPopup() {
+                    document.getElementById('popup').style.display = 'block';
+                    document.getElementById('popup-background').style.display = 'block';
+                    }
+                function closePopup() {
+                    document.getElementById('popup').style.display = 'none';
+                    document.getElementById('popup-background').style.display = 'none';
+                    }
+                setTimeout(showPopup, 5000);
+            </script>
+            <div class="popup-background" id="popup-background"></div>
+            <div class="popup" id="popup">
+                <div class="card-header text-end mb-3 ">
+                    <button class="btn-close" onclick="closePopup()"></button>
+                </div>
+                <hr>
+                <div class="card-body">
+                    <p>Здравствуйте, {{ user.first_name }}! Хотите повторить последний запрос?</p>
+                    <div class="card-footer">
+                        <div class="bth-group text-center mt-4">
+                            <form class="d-flex" action="{% url 'main:search' %}" method="post">
+                                {% csrf_token %}
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control"
+                                           placeholder="Здравствуйте, {{ user.first_name }}! Хотите повторить последний запрос?"
+                                           aria-label="Здравствуйте, {{ user.first_name }}! Хотите повторить последний запрос?"
+                                           aria-describedby="button-addon2"
+                                           name="search" value="{{ history.city }}">
+                                    <button class="btn" type="submit" id="button-addon2"
+                                            style="background-color: #d1f4fd">Найти
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+{% endif %}
+</body>
+{% endblock %}

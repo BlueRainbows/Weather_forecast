@@ -1,0 +1,19 @@
+.container {
+      display: flex;
+      width: 100%;
+      max-width: 1600px;
+      justify-content: center; /* Горизонтальное центрирование */
+      align-items: center; /* Вертикальное центрирование */
+      gap: 40px; /* Отступы между карточками */
+      height: 50vh; /* Высота контейнера на весь экран */
+      padding: 30px; /* Отступы внутри контейнера */
+      box-sizing: border-box; /* Включаем отступы в размер контейнера */
+      }
+.card-home {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    text-align: center;
+}
